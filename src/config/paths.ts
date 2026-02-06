@@ -17,8 +17,8 @@ export function resolveIsNixMode(env: NodeJS.ProcessEnv = process.env): boolean 
 export const isNixMode = resolveIsNixMode();
 
 const LEGACY_STATE_DIRNAMES = [".clawdbot", ".moltbot", ".moldbot"] as const;
-const NEW_STATE_DIRNAME = ".openclaw";
-const CONFIG_FILENAME = "openclaw.json";
+const NEW_STATE_DIRNAME = ".everclaw";
+const CONFIG_FILENAME = "everclaw.json";
 const LEGACY_CONFIG_FILENAMES = ["clawdbot.json", "moltbot.json", "moldbot.json"] as const;
 
 function legacyStateDirs(homedir: () => string = os.homedir): string[] {
@@ -193,7 +193,7 @@ export function resolveDefaultConfigCandidates(
   return candidates;
 }
 
-export const DEFAULT_GATEWAY_PORT = 18789;
+export const DEFAULT_GATEWAY_PORT = 18790;
 
 /**
  * Gateway lock directory (ephemeral).
