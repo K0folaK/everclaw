@@ -279,6 +279,27 @@ export function buildAllowedModelSet(params: {
     if (defaultKey) {
       catalogKeys.add(defaultKey);
     }
+    // Include models from explicitly configured custom providers (e.g., lmstudio)
+    // so they are allowed even when not in the curated catalog.
+    const configuredProviders = (params.cfg.models?.providers ?? {}) as Record<string, unknown>;
+    for (const [providerKey, providerConfig] of Object.entries(configuredProviders)) {
+      if (!providerConfig || typeof providerConfig !== "object") {
+        continue;
+      }
+      const models = (providerConfig as { models?: unknown[] }).models;
+      if (!Array.isArray(models)) {
+        continue;
+      }
+      for (const modelEntry of models) {
+        if (!modelEntry || typeof modelEntry !== "object") {
+          continue;
+        }
+        const modelId = (modelEntry as { id?: string }).id;
+        if (typeof modelId === "string" && modelId.trim()) {
+          catalogKeys.add(modelKey(normalizeProviderId(providerKey), modelId.trim()));
+        }
+      }
+    }
     return {
       allowAny: true,
       allowedCatalog: params.catalog,
